@@ -60,23 +60,26 @@ local function read_mission(file_name)
 end
 
 function update()
-  if not arming:is_armed() then --if disarmed, wait until armed
+  if not arming:is_armed() and vehicle:get_mode() ~= ROVER_MODE_HOLD  then --if disarmed and no HOLD mode, wait until armed and HOLD
     mission_loaded = false
     return update,1000
   end
   if not mission_loaded then --if first time after arm and switch is valid then try to load based on switch position
-    local filename
-    local sw_pos = rc_switch:get_aux_switch_pos()
-    if sw_pos == 0 then
-        filename = 'missionL.txt'
-    elseif sw_pos == 1 then
-        filename = 'missionM.txt'
+    local read_mission
+    local pwm = RC:get_pwm(15) -- chanel 15 (6 pos switch)
+    if pwm < 1230 then
+      read_mission('mission1.waypoints')
+    elseif pwm < 1360 then
+      read_mission('mission2.waypoints')
+    elseif pwm < 1490 then
+      read_mission('mission3.waypoints')
+    elseif pwm < 1620 then
+      read_mission('mission4.waypoints')
+    elseif pwm < 1749 then
+      read_mission('mission5.waypoints')
     else
-        filename = 'missionH.txt'
+      read_mission('mission6.waypoints')
     end
-    mission_loaded = true
-    read_mission(filename)
-  end
   return update, 1000
 end
 
