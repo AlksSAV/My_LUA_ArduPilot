@@ -1,6 +1,5 @@
 local mission_loaded = false
 local rc_switch = rc:find_channel_for_option(24)  --AUX FUNC sw for mission restart
-
 if not rc_switch then  -- requires the switch to be assigned in order to run script
   return
 end
@@ -64,7 +63,7 @@ function update()
     mission_loaded = false
     return update,1000
   end
-  if not mission_loaded then --if first time after arm and switch is valid then try to load based on switch position
+  if not mission_loaded then -- if first time after arm and switch is valid then try to load based on switch position
     local read_mission
     local pwm = RC:get_pwm(15) -- chanel 15 (6 pos switch)
     if pwm < 1230 then
@@ -79,6 +78,9 @@ function update()
       read_mission('mission5.waypoints')
     else
       read_mission('mission6.waypoints')
+     end
+    mission_loaded = true
+    read_mission(read_mission)
     end
   return update, 1000
 end
