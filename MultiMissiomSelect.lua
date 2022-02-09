@@ -1,10 +1,15 @@
+--[[----------------------------------------------------------------------------
+
+------------------------------------------------------------------------------]]
 local mission_loaded = false
 local rc_switch = rc:find_channel_for_option(24)  --AUX FUNC sw for mission restart
+local ENABLE_CHANNEL   = 15 -- 15 CH for 6 position sw
+local lastPwm = rc:get_pwm(ENABLE_CHANNEL)
 if not rc_switch then  -- requires the switch to be assigned in order to run script
   return
 end
-local FREQ
-local last_pwm
+local FREQ = 500
+local last_pwm = 0
 
 local function read_mission(file_name)
 
@@ -61,10 +66,15 @@ local function read_mission(file_name)
 end
 
 function update()
+  local somethingChanged = false
   if not arming:is_armed() and vehicle:get_mode() ~= ROVER_MODE_HOLD  then --if disarmed and no HOLD mode, wait until armed and HOLD
     mission_loaded = false
     return update,1000
   end
+  if (pwm ~= lastPwm) then
+    lastPwm = pwm
+    somethingChanged = true
+end
   if not mission_loaded then -- if first time after arm and switch is valid then try to load based on switch position
     local read_mission
     local pwm = RC:get_pwm(15) -- chanel 15 (6 pos switch)
@@ -84,7 +94,14 @@ function update()
     mission_loaded = true
     read_mission(read_mission)
     end
+    if (not somethingChanged) then return update, FREQ 
+    end -- early return
   return update, FREQ
-end
+end 
 
 return update, FREQ
+
+
+
+
+
