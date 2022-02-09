@@ -3,6 +3,8 @@ local rc_switch = rc:find_channel_for_option(24)  --AUX FUNC sw for mission rest
 if not rc_switch then  -- requires the switch to be assigned in order to run script
   return
 end
+local FREQ
+local last_pwm
 
 local function read_mission(file_name)
 
@@ -66,15 +68,15 @@ function update()
   if not mission_loaded then -- if first time after arm and switch is valid then try to load based on switch position
     local read_mission
     local pwm = RC:get_pwm(15) -- chanel 15 (6 pos switch)
-    if pwm < 1230 then
+    if pwm < 983 then
       read_mission('mission1.waypoints')
-    elseif pwm < 1360 then
+    elseif pwm < 1186 then
       read_mission('mission2.waypoints')
-    elseif pwm < 1490 then
+    elseif pwm < 1391 then
       read_mission('mission3.waypoints')
-    elseif pwm < 1620 then
+    elseif pwm < 1596 then
       read_mission('mission4.waypoints')
-    elseif pwm < 1749 then
+    elseif pwm < 1800 then
       read_mission('mission5.waypoints')
     else
       read_mission('mission6.waypoints')
@@ -82,7 +84,7 @@ function update()
     mission_loaded = true
     read_mission(read_mission)
     end
-  return update, 1000
+  return update, FREQ
 end
 
-return update, 5000
+return update, FREQ
