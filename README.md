@@ -1,4 +1,5 @@
 # My_LUA_ArduPilot
 My LUA script fo Ardupilot:
+* MultiMissionSelect 3 missions selection 
+* MultiMissionSelect from two or more(limited by the number of positions in the switch)
 * MultiMissionSelect
- 1. This [script](https://github.com/ArduPilot/ardupilot/blob/master/libraries/AP_Scripting/applets/MissionSelector.lua) is taken as a basis
