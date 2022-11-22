@@ -2,6 +2,12 @@
 
 ThreeMissions.lua - ArduPilot Lua script
 
+How to use:
+- Store the three Missions in the same subdir where the lua-script has to be placed
+- select the correct SUB_DIR ('/APM/scripts/' for real flight)
+- select the OPTION_SWITCH you decided to use (300..307) and put the same in the Parameter RCx_OPTION of the RC-Channel of your choice
+
+CAUTION: Use this script AT YOUR OWN RISK.
 ------------------------------------------------------------------------------]]
 
 local SCRIPT_NAME = 'ThreeMissions'
