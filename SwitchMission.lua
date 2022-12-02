@@ -3,24 +3,28 @@
 SwitchMission.lua - ArduPilot Lua script
 
 HOW IT WORKS:
-gets RC input switch
-if changed, check if 
-    - the current Mode is non-AUTO and the ModeReason is RC, GCS or INITIALIZED
- or - the current Mode is non-AUTO and the vehicle isn't armed
- or - the Mission is completed
-and if yes, load corresponding Mission:
-Mission#0.waypoints or
-Mission#1.waypoints or
-etc.
+- get RC input as selected and check, if loading a mission is requested
+- if loading is requested, check if change_mission_allowed:
+       - the current Mode is non-AUTO and the ModeReason is RC, GCS or INITIALIZED
+    or - the current Mode is non-AUTO and the vehicle isn't armed
+    or - the Mission is completed
+- if allowed, load corresponding Mission:
+  Mission#0.waypoints or
+  Mission#1.waypoints or
+  etc.
 
 HOW TO USE:
 - Store the Missions in the subdir /missions where the lua-script has to be placed (e.g. on SD-Card in '/APM/scripts/missions')
-- put the Scripting-Option-Switch you decided to use (300..307) into the SCR_USER_PARAM_OPTION (standard: SCR_USER1) parameter (if out of range, no Mission-switching is done -> maybe useful as security against switching)
+- put the Scripting-Option-Switch you decided to use (300..307) into the SCR_USER_PARAM_OPTION (standard: SCR_USER1) parameter
 - put the selected Scripting-Option-Switch (300..307) into the Parameter RCx_OPTION of the RC-Channel of your choice
-- put the number of missions you want to select by the switch into the SCR_USER_PARAM_NUMBER (standard: SCR_USER2) parameter (it should be at least 2)
-    the whole way of the corresponding RC-Channel is devided in regions e.g. for 6 missions: 
-               1/10    1/5    1/5    1/5    1/5   1/10
-     i.e. -100%...-80%...-40%.....0%....40%....80%...100%
+- put info about the selection-method you want to use for the missions into the SCR_USER_PARAM_NUMBER (standard: SCR_USER2) parameter
+  - if <1 : no action (disable switching of mission)
+  - if  1 : the selection is done by a pushbutton: short-push will go through the missions, long-push will load the mission
+  - if >1 : the selection is done by a multi-position-switch with the amount of positions are given here
+    - the whole way of the corresponding RC-Channel is devided in regions e.g. for 6 missions: 
+                 1/10    1/5    1/5    1/5    1/5   1/10
+       i.e. -100%...-80%...-40%.....0%....40%....80%...100%
+- restart the script (e.g. by restarting the FC)
 
 CAUTION: Use this script AT YOUR OWN RISK.
 
