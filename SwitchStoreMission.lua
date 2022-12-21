@@ -152,7 +152,7 @@ local function store_mission(write_path, write_file, location_point)
   file:write(string.format('%i\t0\t%i\t%i\t%0.8f\t%.8f\t%.8f\t%.8f\t%.8f\t%.8f\t%.6f\t1\n',
     1, -- sequence/line-counter
     0, -- frame (abs)
-    17, -- command (LOITER_UNLIM)
+    17, -- command (LOITER_UNLIM)  // 16 - waypoint, 20 - return to launch 
     0, 0, 0, 0, -- params
     location_point:lat()*10^-7, -- lattitude
     location_point:lng()*10^-7, -- longitude
